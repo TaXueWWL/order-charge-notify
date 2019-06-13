@@ -65,7 +65,7 @@ public class OrderNotifyController {
             LOGGER.info("sessionId={},通知请求参数存在空值,不进行处理。", sessionId);
             return NotifyConstant.NOTIFY_RETURN_FAIL;
         }
-
+        ThreadLocal
         // 签名校验
         String originSign = chargeNotifyRequest.getSign();
         String localSign = chargeNotifyRequest.sign(privateKey);

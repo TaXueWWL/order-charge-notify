@@ -28,7 +28,7 @@
 | 模块 | 说明 |
 |  :------ |  :------ |
 |  order-charge-gateway-merchant  |  商户收单网关，2C业务，对用户提供下单接口；提供对下单平台的充值回调接口   |
-|  order-charge-gateway-server  |  核心收单平台，进行业务正式下单，下单完成后投递通知消息到MQ   |
+|  order-charge-gateway-server  |  核心收单平台，2B业务，进行业务正式下单，下单完成后投递通知消息到MQ   |
 |  order-charge-gateway-notify  |  核心通知平台，消费通知消息发送通知到order-charge-gateway-merchant的回调接口   |
 |  order-charge-message-protocol  |  消息协议封装  |
 |  order-charge-sdk  |  HTTP下单接口sdk及通知sdk   |
