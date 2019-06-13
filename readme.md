@@ -23,6 +23,17 @@
 ![项目流程图](demo.png)
 
 
+## 模块描述
+
+| 模块 | 说明 |
+|  :------ |  :------ |
+|  order-charge-gateway-merchant  |  商户收单网关，2C业务，对用户提供下单接口；提供对下单平台的充值回调接口   |
+|  order-charge-gateway-server  |  核心收单平台，进行业务正式下单，下单完成后投递通知消息到MQ   |
+|  order-charge-gateway-notify  |  核心通知平台，消费通知消息发送通知到order-charge-gateway-merchant的回调接口   |
+|  order-charge-message-protocol  |  消息协议封装  |
+|  order-charge-sdk  |  HTTP下单接口sdk及通知sdk   |
+|  script  |  数据库初始化脚本   |
+
 ## 业务描述
 1. 用户访问第三方售票网关，进行购票操作。用户发起下单操作，执行支付转账操作
 
