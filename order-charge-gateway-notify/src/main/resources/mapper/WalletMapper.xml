@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snowalker.notify.common.dao.WalletMapper" >
+
+    <!--新增钱包-->
+    <insert id="insertWallet" parameterType="com.snowalker.notify.common.dao.dataobject.WalletEntity">
+        INSERT INTO t_merchant_wallet (
+            purse_id,
+            merchant_name,
+            balance_account,
+            account_status)
+        VALUES
+        (
+            #{purseId},
+            #{merchantName},
+            #{balanceAccount},
+            0
+        )
+    </insert>
+
+    <!--钱包更新-->
+    <update id="updateWallet" parameterType="java.util.Map">
+        UPDATE t_merchant_wallet
+        SET balance_account = balance_account - #{chargeMoney},
+            version = version + 1
+        WHERE
+	        version = #{version}
+	    AND purse_id = #{purseId}
+    </update>
+
+    <!--插入扣款流水-->
+    <insert id="insertChargeRecord" parameterType="java.util.Map">
+        INSERT INTO t_merchant_charge_record (
+            record_id,
+            order_id,
+            purse_id,
+            merchant_name,
+            charge_price)
+        VALUES
+        (
+            #{recordId},
+            #{orderId},
+            #{purseId},
+            #{merchantName},
+            #{chargeMoney}
+        )
+    </insert>
+
+    <!--查询钱包信息-->
+    <select id="queryWalletInfoByPurseId" parameterType="java.util.Map"
+            resultType="com.snowalker.notify.common.dao.dataobject.WalletEntity">
+        SELECT
+            t.purse_id purseId,
+            t.merchant_name merchantName,
+            t.balance_account balanceAccount,
+            t.account_status accountStatus,
+            t.version version,
+            t.gmt_create gmtCreate,
+            t.gmt_update gmtUpdate
+        FROM
+            t_merchant_wallet t
+        WHERE
+            t.purse_id = #{purseId};
+    </select>
+
+    <!--查询扣款流水-->
+    <select id="queryChargeRecordByOrderId" parameterType="com.snowalker.notify.common.dao.dataobject.OrderEntity"
+            resultType="com.snowalker.notify.common.dao.dataobject.ChargeRecordEntity">
+        SELECT
+            t.id id,
+            t.gmt_create gmtCreate,
+            t.gmt_update gmtUpdate,
+            t.record_id recordId,
+            t.order_id orderId,
+            t.purse_id purseId,
+            t.merchant_name merchantName,
+            t.charge_price chargePrice
+        FROM
+            t_merchant_charge_record t
+        WHERE
+            t.order_id = #{orderId};
+    </select>
+</mapper>

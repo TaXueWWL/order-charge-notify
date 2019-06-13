@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snowalker.gateway.merchant.order.mapper.OrderInfoMapper" >
+
+    <!--订单入库-->
+    <insert id="insertOrderInfo"
+            parameterType="com.snowalker.gateway.merchant.order.dto.ChargeOrderDto">
+        insert into t_user_order3rd
+        (
+            order_id,
+            order_status,
+            user_phoneno,
+            prod_id,
+            prod_name,
+            out_prod_id,
+            out_prod_name,
+            charge_money
+        )
+        values
+        (
+            #{orderId},
+            #{orderStatus},
+            #{phoneNum},
+            #{productId},
+            #{productName},
+            #{outProductId},
+            #{outProductName},
+            #{chargeMoney}
+        )
+    </insert>
+
+    <!--更新订单状态-->
+    <update id="updateOrderStatus"
+            parameterType="com.snowalker.gateway.merchant.order.dto.ChargeOrderDto">
+        update t_user_order3rd t
+        set t.order_status = #{afterUpdateOrderStatus}
+        <if test="finishTime != null">
+            ,t.finish_time = #{finishTime}
+        </if>
+        <if test="outOrderId != null">
+            ,t.out_order_id = #{outOrderId}
+        </if>
+        where t.order_status = #{beforeUpdateOrderStatus}
+        AND t.order_id = #{orderId}
+    </update>
+
+    <!--查询订单信息-->
+    <select id="queryOrderByOrderId"
+            parameterType="com.snowalker.gateway.merchant.order.dto.ChargeOrderDto"
+            resultType="com.snowalker.gateway.merchant.order.dataobject.ChargeOrderDO">
+        select
+            t.id AS id,
+            t.gmt_create AS gmtCreate,
+            t.gmt_update AS gmtUpdate,
+            t.order_id AS orderId,
+            t.order_status AS orderStatus,
+            t.user_phoneno AS userPhoneNo,
+            t.prod_id AS prodId,
+            t.prod_name AS prodName,
+            t.out_prod_id AS outProdId,
+            t.out_prod_name AS outProdName,
+            t.charge_money AS chargeMoney,
+            t.finish_time AS finishTime,
+            t.out_order_id AS outOrderId
+        from t_user_order3rd t
+        where t.order_id = #{orderId}
+    </select>
+
+</mapper>

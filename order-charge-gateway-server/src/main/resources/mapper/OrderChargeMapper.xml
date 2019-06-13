@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snowalker.order.common.dao.OrderChargeMapper" >
+
+    <!--订单入库-->
+    <insert id="insertOrder"
+            parameterType="com.snowalker.order.common.dao.dataobject.OrderInfoDO">
+        insert into t_merchant_order
+        (
+            order_id,
+            channel_order_id,
+            order_status,
+            notify_status,
+            pay_status,
+            user_phoneno,
+            charge_price,
+            purse_id,
+            merchant_name
+        )
+        values
+        (
+            #{orderId},
+            #{channelOrderId},
+            1,
+            1,
+            1,
+            #{userPhoneNo},
+            #{chargeMoney},
+            #{purseId},
+            #{merchantName}
+        )
+    </insert>
+
+    <!--查询订单信息-->
+    <select id="queryOrderInfoByOrderId"
+            parameterType="com.snowalker.order.common.dao.dataobject.OrderInfoDO"
+            resultType="com.snowalker.order.common.dao.dataobject.OrderInfoDobj">
+        select
+            t.order_id AS orderId,
+            t.channel_order_id AS channelOrderId,
+            t.order_status AS orderStatus,
+            t.notify_status AS notifyStatus,
+            t.pay_status AS payStatus,
+            t.user_phoneno AS userPhoneNo,
+            t.charge_price AS chargeMoney,
+            t.purse_id AS purseId,
+            t.merchant_name AS merchantName
+        from t_merchant_order t
+        where t.order_id = #{orderId}
+    </select>
+
+    <!--订单状态修改为处理中-->
+    <update id="updateOrderDealing" parameterType="com.snowalker.order.common.dao.dataobject.OrderInfoDO">
+        UPDATE t_merchant_order
+        SET order_status = 2,
+            pay_status = 2
+        WHERE
+	        order_status = 1
+	    AND pay_status = 1
+	    AND channel_order_id = #{channelOrderId}
+    </update>
+
+    <!--支付状态修改为成功-->
+    <update id="updateOrderPayStatusSucc" parameterType="com.snowalker.order.common.dao.dataobject.OrderInfoDO">
+        UPDATE t_merchant_order
+        SET pay_status = 0,
+            order_status = 0,
+            notify_status = 2
+        WHERE
+            pay_status = 2
+	    AND order_status = 2
+	    AND notify_status = 1
+	    AND order_id = #{orderId}
+    </update>
+
+    <!--通知状态改成功-->
+    <update id="updateOrderNotifyStatusSucc" parameterType="com.snowalker.order.common.dao.dataobject.OrderInfoDO">
+        UPDATE t_merchant_order
+        SET notify_status = 0
+        WHERE
+	        order_status = 0
+	    AND notify_status = 2
+	    AND order_id = #{orderId}
+    </update>
+</mapper>

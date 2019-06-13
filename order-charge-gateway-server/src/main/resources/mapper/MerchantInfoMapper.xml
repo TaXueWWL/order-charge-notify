@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snowalker.order.common.dao.MerchantInfoMapper" >
+
+    <!--查询商户配置信息-->
+    <select id="queryMerchantList"
+            resultType="com.snowalker.order.common.dao.dataobject.MerchantInfoDO">
+        select
+            t.merchant_name AS merchantName,
+            t.purse_id AS merchantPurseId,
+            t.notify_url AS merchantNotifyUrl,
+            t.private_key AS merchantPrivateKey
+        from t_merchant_info t
+        order by id desc;
+    </select>
+
+</mapper>
