@@ -2,7 +2,6 @@ package com.snowalker.notify.mq.payment.consumer;
 
 import com.snowalker.notify.common.service.WalletService;
 import com.snowalker.notify.common.util.LogExceptionWapper;
-import com.snowalker.notify.mq.payment.producer.OrderStatusUpdateProducer;
 import com.snowalker.order.charge.message.constant.MessageProtocolConst;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;

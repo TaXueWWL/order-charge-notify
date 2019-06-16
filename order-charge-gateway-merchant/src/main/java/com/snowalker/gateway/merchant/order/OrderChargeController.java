@@ -46,7 +46,7 @@ public class OrderChargeController {
         String chargeMoney = request.getParameter("charge_money");
         String prodId = request.getParameter("prod_id");
 
-        Result result = new Result("", "");
+        Result result;
         // 前置校验：校验参数、产品、库存等
         if (requestParamValidateHandler.checkRequestParams(phoneNum, chargeMoney, prodId)) {
             LOGGER.info("下单接口入参:phoneNum={},chargeMoney={},prodId={}", phoneNum, chargeMoney, prodId);
